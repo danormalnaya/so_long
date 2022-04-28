@@ -6,13 +6,36 @@
 /*   By: lloko <lloko@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 16:34:54 by lloko             #+#    #+#             */
-/*   Updated: 2022/04/21 19:18:06 by lloko            ###   ########.fr       */
+/*   Updated: 2022/04/28 18:55:42 by lloko            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+#include <stdio.h>
 
-static int	valid_positions(char **map, t_map *carta)
+static char	*form_map_arr(int fd, t_game *carta)
+{
+	char	*str;
+	int		i;
+
+	carta->map.arr = malloc(sizeof(char *) * (carta->map.x + 1));
+	if (!(carta->map.arr))
+		printf("Map allocation error");
+	str = get_next_line(fd);
+	if (!str)
+		printf("Map reading error");
+	i = 0;
+	while (str)
+	{
+		carta->map.arr[i] = str;
+		carta->map.arr[i + 1] = NULL;
+		str = get_next_line(fd);
+		i++;
+	}
+	return(str);
+}
+
+static int	valid_positions(char **map, t_game *carta)
 {
 	int	i;
 	int	j;
@@ -33,12 +56,12 @@ static int	valid_positions(char **map, t_map *carta)
 		}
 		i++;
 	}
-	if (carta->e_count != 1 || carta->p_count != 1 || carta->c_count == 0)
+	if (carta->e_count != 1 || carta->p_count != 1 || carta->c_count < 1)
 	{
 		write(1, "The map contains an error\n", 26);
-		return (0);
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 
 static int	valid_walls(char **map)
@@ -58,16 +81,18 @@ static int	valid_walls(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[0][j] != 1 || map[row - 1][j] != 1
-				|| map[i][0] != 1 || map[i][col - 1] != 1)
-				return (0);
+			if (map[i][j] == '\n')
+				break;
+			if (map[0][j] != '1' || map[row - 1][j] != '1'
+				|| map[i][0] != '1' || map[i][col - 2] != '1')
+				return (1);
 			j++;
 		}
-		if (j != col)
-			return (0);
+		if (j != col - 1)
+			return (1);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 static int	valid_characters(char **map)
@@ -81,14 +106,16 @@ static int	valid_characters(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] != '0' || map[i][j] != '1' || map[i][j] != 'C'
-				|| map[i][j] != 'E' || map[i][j] != 'P')
-				return (0);
+			if (map[i][j] == '\n')
+				break;
+			if (map[i][j] != '0' && map[i][j] != '1' && map[i][j] != 'C'
+				&& map[i][j] != 'E' && map[i][j] != 'P')
+				return (1);
 			j++;
 		}
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 static int	valid_extention_file(char *file)
@@ -96,42 +123,58 @@ static int	valid_extention_file(char *file)
 	char	*name;
 
 	if (!file)
-		return (0);
+		return (1);
 	name = ft_strrchr(file, '.');
-	if (ft_strncmp(name, ".ber", 5))
-		return (0);
-	return (1);
+	if (ft_strncmp(name, ".ber", 4))
+		return (1);
+	return (0);
 }
 
-void	map_init(t_game *game)
+int	map_check(char **map, char *file)
 {
-	int	i;
-	int	j;
+	t_game	carta;
 
-	i = 0;
-	while (game->map[i])
+	carta.e_count = 0;
+	carta.p_count = 0;
+	carta.c_count = 0;
+	//printf("1 - %d\n", valid_positions(map, &carta));
+	printf("2 - %d\n", valid_walls(map));
+	printf("3 - %d\n", valid_characters(map));
+	printf("4 - %d\n", valid_extention_file(file));
+	if (map)
+		if (valid_positions(map, &carta) || valid_walls(map)
+			|| valid_characters(map) || valid_extention_file(file))
+			return (1);
+	return (0);
+}
+
+int main(int fd, char **argv)
+{
+	char	*carta;
+	char	**prov;
+	t_game	*game;
+	int		i = 0;
+
+	fd = open(argv[1], O_RDONLY);
+	carta = get_next_line(fd);
+	prov = malloc(sizeof(char *) * 20);
+	prov[i] = carta;
+	while (carta)
 	{
-		j = 0;
-		whle(game->map[i][j])
-		{
-			if (game->map[i][j] == '1')
-				game->wall++;
-			
-		}
+		printf("%s", carta);
+		carta = get_next_line(fd);
+		i++;
+		prov[i] = carta;
 	}
-}
-
-static int	map_check(char **map, char *file)
-{
-	t_map	carta;
-	
-	return (!valid_positions(map, &carta) || !valid_walls(map)
-		|| !valid_characters(map) || !valid_extention_file(file));
-}
-
-int main(char **argv)
-{
-	t_game game;
-	if (map_check(game.map, argv[1]))
-		return (0);
+	printf("\n\n");
+	if (map_check(prov, argv[1]))
+		printf("fail");
+	printf("\n\n");
+	i = 0;
+	while (prov[i])
+	{
+		printf("%s", prov[i]);
+		i++;
+	}
+	return (0);
 }
