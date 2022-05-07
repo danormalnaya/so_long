@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lloko <lloko@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/10 17:27:04 by lloko             #+#    #+#             */
-/*   Updated: 2022/05/05 13:00:38 by lloko            ###   ########.fr       */
+/*   Created: 2022/04/07 15:22:32 by lloko             #+#    #+#             */
+/*   Updated: 2022/05/07 20:56:09 by lloko            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,41 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
-# include "minilibx-linux/mlx.h"
+# include <stdio.h> /*удалить из проекта */
+//# include "minilibx-linux/mlx.h"
 # include "libft/libft.h"
 # include "gnl/get_next_line.h"
 
-typedef struct	s_map
+typedef struct s_map
 {
 	int		x;
 	int		y;
 	char	**arr;
 }				t_map;
 
-typedef struct	s_game
+typedef struct s_game
 {
-	int		wall;
-	int		space;
-	int		p_count;
-	int		e_count;
-	int		c_count;
-	int		player_x;
-	int		player_y;
-	int		score; /*определить сколько колекционных предметов есть на карте */
-	int		coll; /* вначале игры будет 0, то количество предметов которые мы собрали в игре */
-	int		exit;
-	int		end_game;
-	t_map	map;
+	int			wall;
+	int			space;
+	int			p_count;
+	int			e_count;
+	int			c_count;
+	int			score;
+	int			coll;
+	int			exit;
+	int			end_game;
+	t_map		map;
+	t_player	player;
 }				t_game;
 
-int	map_check(char **map, char *file);
+typedef struct s_player
+{
+	int		player_x;
+	int		player_y;
+}				t_player;
+
+int		map_check(char **map, char *file);
+int		game_over(char *str);
+void	read_map(char *file, t_game *carta);
 
 #endif

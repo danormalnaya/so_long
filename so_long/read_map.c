@@ -5,21 +5,42 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lloko <lloko@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/10 17:33:28 by lloko             #+#    #+#             */
-/*   Updated: 2022/05/05 15:32:53 by lloko            ###   ########.fr       */
+/*   Created: 2022/04/24 19:24:45 by lloko             #+#    #+#             */
+/*   Updated: 2022/05/07 21:01:14 by lloko            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static char	*map_in_arr(int fd, t_game *carta)
+static void	*count_rows(char *file, t_game *carta)
+{
+	int		fd;
+	char	*temp;
+	char	*str;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		game_over ("File didn't read");
+	str = get_next_line(fd);
+	carta->map.y++;
+	while (str)
+	{
+		temp = str;
+		str = get_next_line(fd);
+		free(temp);
+		carta->map.y++;
+	}
+	close (fd);
+}
+
+static void	map_in_arr(int fd, t_game *carta)
 {
 	char	*str;
 	int		i;
 
-	carta->map.arr = malloc(sizeof(char *) * (carta->map.x + 1));
+	carta->map.arr = malloc(sizeof(char *) * (carta->map.y + 1));
 	if (!(carta->map.arr))
-		game_over("Map don't allocation\n");
+		game_over("Map didn't allocation\n");
 	str = get_next_line(fd);
 	if (!str)
 		game_over("Map reading error\n");
@@ -31,21 +52,21 @@ static char	*map_in_arr(int fd, t_game *carta)
 		str = get_next_line(fd);
 		i++;
 	}
-	return(str);
 }
 
 void	read_map(char *file, t_game *carta)
 {
-	int	fd;
-	
+	int		fd;
+
+	count_rows(file, carta);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		game_over("Map don't read");
+		game_over("Map didn't read");
 	map_in_arr(fd, carta);
-	if (map_check != 0)
+	if (map_check(carta->map.arr, file, carta) != 0)
 	{
-		free(carta);
-		game_over("Map unvalid");
+		clean(carta);
+		game_over("The map contains an error\n");
 	}
 	close (fd);
 }
