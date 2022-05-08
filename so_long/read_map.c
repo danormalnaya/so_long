@@ -6,13 +6,13 @@
 /*   By: lloko <lloko@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 19:24:45 by lloko             #+#    #+#             */
-/*   Updated: 2022/05/07 21:01:14 by lloko            ###   ########.fr       */
+/*   Updated: 2022/05/08 18:36:14 by lloko            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static void	*count_rows(char *file, t_game *carta)
+void	count_rows(char *file, t_game *carta)
 {
 	int		fd;
 	char	*temp;
@@ -65,7 +65,7 @@ void	read_map(char *file, t_game *carta)
 	map_in_arr(fd, carta);
 	if (map_check(carta->map.arr, file, carta) != 0)
 	{
-		clean(carta);
+		free(carta->map.arr);
 		game_over("The map contains an error\n");
 	}
 	close (fd);

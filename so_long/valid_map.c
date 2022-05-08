@@ -6,7 +6,7 @@
 /*   By: lloko <lloko@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 21:23:34 by lloko             #+#    #+#             */
-/*   Updated: 2022/05/07 21:04:42 by lloko            ###   ########.fr       */
+/*   Updated: 2022/05/08 17:33:47 by lloko            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ static int	valid_extention_file(char *file)
 int	map_check(char **map, char *file, t_game *carta)
 {
 	if (map)
-		if (!valid_positions(map, carta) || !valid_walls(map, carta)
-			|| !valid_characters(map) || !valid_extention_file(file))
+		if (valid_positions(map, carta) || valid_walls(map, carta)
+			|| valid_characters(map) || valid_extention_file(file))
 			return (1);
 	return (0);
 }
