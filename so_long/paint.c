@@ -6,7 +6,7 @@
 /*   By: lloko <lloko@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 17:35:19 by lloko             #+#    #+#             */
-/*   Updated: 2022/05/08 19:24:33 by lloko            ###   ########.fr       */
+/*   Updated: 2022/05/14 19:51:39 by lloko            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ static void	draw_player_and_collect(t_game *carta)
 
 int	paint(t_game *carta)
 {
+	push_image_from_file(carta);
 	draw_items(carta);
 	draw_player_and_collect(carta);
 	return (0);

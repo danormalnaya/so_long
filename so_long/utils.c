@@ -6,7 +6,7 @@
 /*   By: lloko <lloko@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/07 16:32:25 by lloko             #+#    #+#             */
-/*   Updated: 2022/05/08 14:14:38 by lloko            ###   ########.fr       */
+/*   Updated: 2022/05/15 18:43:53 by lloko            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,10 @@ int	game_over(char *str)
 		exit(1);
 	}
 	exit(0);
+}
+
+int	move_player(t_game *carta, int y, int x)
+{
+	carta->map.arr[y][x] = '0';
+	return (0);
 }
