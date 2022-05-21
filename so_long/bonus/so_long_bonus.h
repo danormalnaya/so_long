@@ -6,7 +6,7 @@
 /*   By: lloko <lloko@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 15:22:32 by lloko             #+#    #+#             */
-/*   Updated: 2022/05/15 19:36:48 by lloko            ###   ########.fr       */
+/*   Updated: 2022/05/21 14:09:47 by lloko            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <mlx.h>
+# include <stdio.h> /* delete */
 # include "../ft_printf/ft_printf.h"
 # include "../libft/libft.h"
 # include "../gnl/get_next_line.h"
@@ -43,6 +44,7 @@ typedef struct s_sprite
 	void	*background;
 	void	*exit;
 	void	*collect;
+	void	*vrag;
 }				t_sprite;
 
 typedef struct s_game
