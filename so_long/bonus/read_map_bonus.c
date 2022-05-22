@@ -6,7 +6,7 @@
 /*   By: lloko <lloko@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 19:24:45 by lloko             #+#    #+#             */
-/*   Updated: 2022/05/15 19:15:16 by lloko            ###   ########.fr       */
+/*   Updated: 2022/05/22 19:30:30 by lloko            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,6 @@ void	read_map(char *file, t_game *carta)
 		game_over("Map didn't read");
 	map_in_arr(fd, carta);
 	if (map_check(carta->map.arr, file, carta) != 0)
-	{
-		free(carta->map.arr);
 		game_over("The map contains an error\n");
-	}
 	close (fd);
 }

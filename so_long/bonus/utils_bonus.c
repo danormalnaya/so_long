@@ -6,7 +6,7 @@
 /*   By: lloko <lloko@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/07 16:32:25 by lloko             #+#    #+#             */
-/*   Updated: 2022/05/15 19:14:03 by lloko            ###   ########.fr       */
+/*   Updated: 2022/05/22 19:19:47 by lloko            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,18 @@ int	move_player(t_game *carta, int y, int x)
 {
 	carta->map.arr[y][x] = '0';
 	return (0);
+}
+
+void	touch_vrag(t_game *carta)
+{
+	t_vrag	*tmp;
+
+	tmp = carta->vrag;
+	while (tmp)
+	{
+		if (tmp->vrag_y == carta->player.player_y
+			&& tmp->vrag_x == carta->player.player_x)
+			game_over("You touch enemy!\n");
+		tmp = tmp->next;
+	}
 }

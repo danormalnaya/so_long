@@ -6,7 +6,7 @@
 /*   By: lloko <lloko@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 15:22:32 by lloko             #+#    #+#             */
-/*   Updated: 2022/05/21 14:09:47 by lloko            ###   ########.fr       */
+/*   Updated: 2022/05/22 19:18:47 by lloko            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <mlx.h>
-# include <stdio.h> /* delete */
 # include "../ft_printf/ft_printf.h"
 # include "../libft/libft.h"
 # include "../gnl/get_next_line.h"
@@ -44,8 +43,21 @@ typedef struct s_sprite
 	void	*background;
 	void	*exit;
 	void	*collect;
-	void	*vrag;
+	void	*cur;
+	void	*vrag_0;
+	void	*vrag_1;
+	void	*vrag_2;
+	void	*vrag_3;
+	int		anim;
 }				t_sprite;
+
+typedef struct s_vrag
+{
+	int				vrag_x;
+	int				vrag_y;
+	int				dir;
+	struct s_vrag	*next;
+}				t_vrag;
 
 typedef struct s_game
 {
@@ -57,9 +69,11 @@ typedef struct s_game
 	int			step;
 	void		*mlx;
 	void		*win;
+	int			move_vr;
 	t_map		map;
 	t_player	player;
 	t_sprite	sprite;
+	t_vrag		*vrag;
 }				t_game;
 
 int		map_check(char **map, char *file, t_game *carta);
@@ -73,5 +87,11 @@ int		paint(t_game *carta);
 void	move(t_game *carta);
 
 int		count_vrag(char **map, t_game *carta);
+void	push_image_vrag(t_game *carta);
+void	touch_vrag(t_game *carta);
+void	anim_vrag(t_game *carta);
+void	move_enemy(t_game *carta);
+void	clean_en_lst(t_game *carta);
+void	add_enem(t_game *carta, int r, int c);
 
 #endif
